@@ -41,9 +41,11 @@ FileUtils.makedirs(HH::DOWNLOADS)
 
 Dir.chdir(HH::USER)
 
+=begin
 font "#{HH::FONTS}/Lacuna.ttf"
 font "#{HH::FONTS}/LiberationMono-Regular.ttf"
 font "#{HH::FONTS}/LiberationMono-Bold.ttf"
 font "#{HH::FONTS}/Pixelpoiiz.ttf"
 font "#{HH::FONTS}/Phonetica.ttf"
 font "#{HH::FONTS}/TakaoGothic.otf"
+=end

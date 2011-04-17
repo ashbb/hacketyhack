@@ -52,30 +52,33 @@ end
 
 w = (HH::PREFS['width'] || '790').to_i
 h = (HH::PREFS['height'] || '550').to_i
-window :title => "Hackety Hack", :width => w, :height => h do
+Shoes.app :title => "Hackety Hack", :width => w, :height => h do
   HH::APP = self
   extend HH::App, HH::Widgets, HH::Observable
   style(Shoes::LinkHover, :fill => nil, :stroke => "#C66")
   style(Shoes::Link, :stroke => "#377")
 
-  @main_content = flow :width => 1.0, :height => -1 do
-    background "#e9efe0"
-    background "#e9efe0".."#c1c5d0", :height => 150, :bottom => 150
+  @main_content = flow do
+    background "#e9efe0", height: h
+    flow margin_top: h - 150 do
+      flow{background "#e9efe0".."#c1c5d0", height: 150}
+    end
   end
-  @lesson_stack = stack :hidden => true, :width => 400
-  @lesson_stack.finish do
-    finalization
-  end
+  #@lesson_stack = stack :hidden => true, :width => 400
+  #@lesson_stack.finish do
+  #  finalization
+  #end
 
   extend HH::HasSideTabs
   init_tabs @main_content
-  
+
   addtab :Home, :icon => "tab-home.png"
   addtab :Editor, :icon => "tab-new.png"
   addtab :Lessons, :icon => "tab-tour.png"
   addtab :Help, :icon => "tab-help.png" do
-    Shoes.show_manual
+    Shoes.show_manual 'English'
   end
+=begin
   addtab :Cheat, :icon => "tab-cheat.png" do
     dialog :title => "Hackety Hack - Cheat Sheet", :width => 496 do
       image "#{HH::STATIC}/hhcheat.png"
@@ -127,5 +130,5 @@ window :title => "Hackety Hack", :width => w, :height => h do
     end
   end
 
-  
+=end
 end

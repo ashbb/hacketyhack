@@ -8,16 +8,21 @@ class HH::SideTabs
     # tabs whose file has been loaded
     @loaded_tabs = {}
     sidetabs = self
-    width = HOVER_WIDTH;
+    width = HOVER_WIDTH
+    tabs = %w[home editor lessons help].map &:capitalize
+    tips = []
+    tabs.each_with_index do |tab, i|
+      y = i*26+4
+      slot.app.instance_eval do
+        tips << [rect(38, y, 100, 24, fill: "#F7A", curve: 4, strokewidth: 0, hidden: true), 
+          rect(38, y, 10, 24, fill: "#F7A", strokewidth: 0, hidden: true), 
+          para(fg(tab, white), left: 44, top: y+2, hidden: true)]
+      end
+    end
+    tip = {}
+    tabs.each_with_index{|tab, i| tip.merge! tab => tips[i]}
     append_to @slot do
-      tip = nil
-      right = stack :margin_left => 38, :height => 1.0
-      left = stack :top => 0, :left => 0, :width => 38, :height => 1.0 do
-        tip = stack :top => 0, :left => 0, :width => width, :margin => 4,
-                    :hidden => true do
-          background "#F7A", :curve => 6
-          para "HOME", :margin => 3, :margin_left => 40, :stroke => white
-        end
+      left = stack :width => 38, :height => height do
         # colored background
         background "#cdc", :width => 38
         background "#dfa", :width => 36
@@ -27,6 +32,7 @@ class HH::SideTabs
         background "#7aa", :width => 12
         background "#77a", :width => 6
       end
+      right = stack :margin_left => 38, :height => height
       sidetabs.instance_eval{@left, @right, @tip = left, right, tip}
     end
   end
@@ -55,22 +61,21 @@ class HH::SideTabs
     end
     width = HOVER_WIDTH+22;
     append_to @left do
-      stack pos => pixelpos, :left => 0, :width => 38, :margin => 4 do
-        bg = background "#DFA", :height => 26, :curve => 6, :hidden => true
-        image(icon_path, :margin => 4).
-          hover do
-            bg.show
-            tip.parent.width = width
-            tip.top = nil
-            tip.bottom = nil
-            tip.send("#{pos}=", pixelpos)
-            tip.contents[1].text = hover
-            tip.show
-          end.leave do
-            bg.hide
-            tip.hide
-            tip.parent.width = 40
-          end.click &onclick
+      stack width: 38, height: 26, margin: 4 do
+        bg = img = nil
+        flow do
+          bg = background "#DFA", width: 32, curve: 6, hidden: true
+          img = image(icon_path, margin: 4)
+        end
+	img.hover do
+          bg.show
+          tip[hover].each &:show
+	end
+        img.leave do
+          bg.hide
+          tip[hover].each &:hide
+        end
+        img.click &onclick
       end
     end
 
@@ -134,8 +139,7 @@ class HH::SideTab
   def initialize slot
     @slot = slot
     slot.append do
-      @content = flow :hidden => true, :left => 0, :top => 0,
-                      :width => 1.0, :height => 1.0 do content end
+      @content = flow do content end
     end
   end
 

@@ -1,4 +1,5 @@
-#!/usr/bin/env shoes
+require 'green_shoes'
+$:.push '.'
 
 # the main application executable
 
