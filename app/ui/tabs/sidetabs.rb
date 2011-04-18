@@ -9,9 +9,11 @@ class HH::SideTabs
     @loaded_tabs = {}
     sidetabs = self
     width = HOVER_WIDTH
-    tabs = %w[home editor lessons help].map &:capitalize
+    tabs = (%w[home editor lessons help cheat about] + %w[dummy] * 13 + %w[preferences quit]).
+      map &:capitalize
     tips = []
     tabs.each_with_index do |tab, i|
+      (tips.push nil; next) if tab == 'Dummy'
       y = i*26+4
       slot.app.instance_eval do
         tips << [rect(38, y, 100, 24, fill: "#F7A", curve: 4, strokewidth: 0, hidden: true), 
@@ -47,12 +49,8 @@ class HH::SideTabs
     tab = opts
     tab[:symbol] = symbol
     tab[:icon] ||= "icon-file.png"
-    tab[:position] ||= :top
     tab[:hover] ||= symbol.to_s
     
-    pos = tab[:position]
-    pixelpos = @n_tabs[pos] * (ICON_SIZE + 10)
-    @n_tabs[pos] += 1
     hover = tab[:hover]
     icon_path = HH::STATIC + "/" + tab[:icon]
     tip = @tip
@@ -61,16 +59,17 @@ class HH::SideTabs
     end
     width = HOVER_WIDTH+22;
     append_to @left do
+      (stack(width: 38, height: 26){}; break) if symbol == :Dummy
       stack width: 38, height: 26, margin: 4 do
         bg = img = nil
         flow do
           bg = background "#DFA", width: 32, curve: 6, hidden: true
           img = image(icon_path, margin: 4)
         end
-	img.hover do
+        img.hover do
           bg.show
           tip[hover].each &:show
-	end
+        end
         img.leave do
           bg.hide
           tip[hover].each &:hide
@@ -83,7 +82,6 @@ class HH::SideTabs
       @loaded_tabs[symbol] = HH::NoContentSideTab.new blk
     end
   end
-
 
   def opentab symbol
     tab = gettab symbol
@@ -104,7 +102,7 @@ class HH::SideTabs
     end
   end
 
-private
+  private
   def append_to slot, &blk
     slot.app do
       slot.append {self.instance_eval &blk}

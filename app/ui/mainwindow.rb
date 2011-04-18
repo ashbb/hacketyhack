@@ -78,29 +78,27 @@ Shoes.app :title => "Hackety Hack", :width => w, :height => h do
   addtab :Help, :icon => "tab-help.png" do
     Shoes.show_manual 'English'
   end
-=begin
   addtab :Cheat, :icon => "tab-cheat.png" do
-    dialog :title => "Hackety Hack - Cheat Sheet", :width => 496 do
+    window :title => "Hackety Hack - Cheat Sheet", :width => 496 do
       image "#{HH::STATIC}/hhcheat.png"
     end
   end
   addtab :About, :icon => "tab-hand.png" do
-    about = app.slot.stack :top => 0, :left => 0,
-                           :width => 1.0, :height => 1.0 do
-      background white
-      image("#{HH::STATIC}/hhabout.png", :top => 30, :left => 100).
-        click { about.remove }
-      glossb "OK", :top => 500, :left => 0.45, :width => 70, :color => "dark" do
-        about.remove
-      end
-      click { about.remove }
-    end
+    about = []
+    about << rect(100, 30, width-170, height-60, fill: white, strokewidth: 0)
+    about << image("#{HH::STATIC}/hhabout.png", top: 30, left: 100)
+    timer(0.01){about[0].click{about.each &:clear}}
+    #glossb "OK", :top => 500, :left => 0.45, :width => 70, :color => "dark" do
+      #  about.remove
+    #end
   end
-  addtab :Quit, :icon => "tab-quit.png", :position => :bottom do
-    close
+  13.times{addtab :Dummy}
+  addtab :Prefs, :hover => "Preferences", :icon => "tab-properties.png"
+  addtab :Quit, :icon => "tab-quit.png" do
+    exit
   end
-  addtab :Prefs, :hover => "Preferences", :icon => "tab-properties.png",
-    :position => :bottom
+
+=begin
   opentab :Home
 
   @tour_notice =
