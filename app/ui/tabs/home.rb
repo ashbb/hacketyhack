@@ -55,7 +55,7 @@ class HH::SideTabs::Home < HH::SideTab
     if scripts.empty?
       para "You have no programs."
     else
-      scripts[start,7].each do |script|
+      scripts[start,5].each do |script|
         stack :margin_left => 8, :margin_top => 4 do
           flow do
             britelink "icon-file.png", script[:name], script[:mtime] do
