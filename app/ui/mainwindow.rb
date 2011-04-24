@@ -55,8 +55,8 @@ h = (HH::PREFS['height'] || '550').to_i
 Shoes.app :title => "Hackety Hack", :width => w, :height => h do
   HH::APP = self
   extend HH::App, HH::Widgets, HH::Observable
-  style(Shoes::LinkHover, :fill => nil, :stroke => "#C66")
-  style(Shoes::Link, :stroke => "#377")
+  style Shoes::LinkHover, stroke: "#C66", underline: false
+  style Shoes::Link, stroke: "#377", underline: false
   nostroke
 
   @main_content = flow do

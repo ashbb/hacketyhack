@@ -53,9 +53,9 @@ class HH::SideTabs::Home < HH::SideTab
   # and the samples
   def display_scripts scripts, start, samples = false
     if scripts.empty?
-      para "You have no programs.", :margin_left => 12, :font => "Lacuna Regular"
+      para "You have no programs."
     else
-      scripts[start,5].each do |script|
+      scripts[start,7].each do |script|
         stack :margin_left => 8, :margin_top => 4 do
           flow do
             britelink "icon-file.png", script[:name], script[:mtime] do
@@ -63,11 +63,11 @@ class HH::SideTabs::Home < HH::SideTab
             end
             unless script[:sample]
               # if it is not a sample file
-              para (link "x" do
+              para link(ins("x")){
                 if confirm("Do you really want to delete \"#{script[:name]}\"?")
                   delete script
                 end
-              end)
+              }, width: 20, margin: [20, 5, 0, 0]
             end
           end
           if script[:desc]
@@ -78,8 +78,10 @@ class HH::SideTabs::Home < HH::SideTab
         end
       end
       # FIXME: sometimes :sample_scripts
+=begin
       m = samples ? :sample_scripts : :home_scripts
       home_arrows m, start, scripts.length
+=end
     end
   end
 
@@ -124,26 +126,33 @@ class HH::SideTabs::Home < HH::SideTab
 
   # creates the content of the home tab
   def content
-    image "#{HH::STATIC}/hhhello.png", left: 305, top: 42
+    image("#{HH::STATIC}/hhhello.png").move 305, 42
     rect 38, 0, width-38, 35, fill: "#CDC"
     rect 38, 0, width-38, 38, fill: black.push(0.05)..black.push(0.2)
     @tabs, @tables = [], HH::DB.tables
     @scripts = HH.scripts
 
     hometab "Programs", true, 50, 13 do
-      #@homepane.clear { home_scripts }
+      @slot.append do
+        @homepane.clear{home_scripts}
+        flush
+      end
     end
     hometab "Samples", false, 168, 13 do
-      #@homepane.clear { sample_scripts }
+      @slot.append do
+        @homepane.clear{sample_scripts}
+        flush
+      end
     end
     rect 38, 38, 300, 4, fill: rgb(233, 239, 224)
 
+    @slot.append do
+      stack(height: 40){}
+      @homepane = flow(margin_top: 10){home_scripts}
+      flush
+    end
+
 =begin
-      stack do
-        @homepane = stack do
-          home_scripts
-        end
-      end
       stack :margin_left => 12 do
         background rgb(233, 239, 224, 0.85)..rgb(233, 239, 224, 0.0)
         image 10, 70

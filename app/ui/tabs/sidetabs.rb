@@ -34,7 +34,7 @@ class HH::SideTabs
         background "#7aa", :width => 12
         background "#77a", :width => 6
       end
-      right = stack :margin_left => 38, :height => height
+      right = stack width: width() - 38, height: height
       sidetabs.instance_eval{@left, @right, @tip = left, right, tip}
     end
   end
@@ -137,7 +137,7 @@ class HH::SideTab
   def initialize slot
     @slot = slot
     slot.append do
-      @content = flow do content end
+      @content = flow
     end
   end
 

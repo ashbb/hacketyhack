@@ -251,28 +251,13 @@ module HH::Widgets
 
   # creates a link having a similar appearance as the gloss buttons
   def britelink icon, name, time = nil, bg = "#8c9", &blk
-    bg = background bg, :curve => 6, :height => 29, :hidden => true
-    flow :margin => 4, :width => 300 do
-      image HH::STATIC + "/" + icon, :margin_right => 6, :margin => 3
-      p1 = link(name, :stroke => black, :underline => "none", &blk)
-      para p1, :size => 13, :font => "Lacuna Regular", :margin => 0,
-        :wrap => "trim", :width => 280
-      if time
-        p2 = para time.short, :stroke => "#396", :font => "Lacuna Regular",
-          :size => 9, :margin => 4, :margin_bottom => 0
-      end
-      ele = image 1, 1
-      p1.hover do
-        p1.parent.stroke = p1.stroke = white
-        p2.stroke = "#FF5" if time
-        bg.width = ele.left + 10
-        bg.show
-      end
-      p1.leave do
-        p1.parent.stroke = p1.stroke = black
-        p2.stroke = "#396" if time
-        bg.hide
-      end
+    flow width: 300, margin: [4, 2, 4, 4] do
+      b = background bg, curve: 6, height: 29, hidden: true
+      img = image HH::STATIC + "/" + icon, margin_top: 3
+      p1 = para link(fg(name, black)){alert name}, size: 13, width: 200
+      para(fg(time.short, green), size: 9, width: 50, margin_top: 4) if time
+      p1.hover{b.show}
+      p1.leave{b.hide}
     end
   end
 
