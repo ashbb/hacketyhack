@@ -108,30 +108,13 @@ class HH::SideTabs::Home < HH::SideTab
     para "You have no lessons.", :margin_left => 12, :font => "Lacuna Regular"
   end
 
-  def hometab name, bg, starts = false, &blk
-    tab =
-      stack :margin_top => (starts ? 6 : 10), :margin_left => 14, :width => 120 do
-        off = background bg, :curve => 6, :hidden => starts
-        on = background rgb(233, 239, 224), :curve => (starts ? 6 : 0), :top => (starts ? 0 : 28)
-        title = link(name, :stroke => (starts ? black : white), :underline => "none") do
-          @tabs.each do |t|
-            next unless t.contents[0].hidden
-            t.margin_top = 10
-            t.contents[2].contents[0].stroke = white
-            t.contents[2].size = 11
-            t.contents[1].style(:curve => 0, :top => 28)
-            t.contents[0].show
-          end
-          tab.margin_top = 6
-          title.stroke = black
-          title.parent.size = 13
-          on.style(:curve => 6, :top => 0)
-          off.hide
-          blk[]
-        end
-        para title, :size => (starts ? 13 : 11), :align => "center",
-          :margin => 6, :margin_bottom => 12, :font => "Lacuna Regular"
-      end
+  def hometab name, starts, x, y, &blk
+    tab = [ rect(x, y, 105, 29, fill: "#555", curve: 6),
+      rect(x, y-5, 105, 34, fill: rgb(233, 239, 224), curve: 6),
+      para(fg(name, white), left: x+25, top: y+2, size: 11),
+      para(fg(name, black), left: x+20, top: y)]
+    tab[0].click{@tabs.each{|a| a.each &:toggle}; blk.call}
+    timer(0.01){starts ? (tab[0].hide; tab[2].hide) : (tab[1].hide; tab[3].hide)}
     @tabs << tab
   end
 
@@ -141,23 +124,21 @@ class HH::SideTabs::Home < HH::SideTab
 
   # creates the content of the home tab
   def content
-    image "#{HH::STATIC}/hhhello.png", :bottom => -120, :right => 0
-
+    image "#{HH::STATIC}/hhhello.png", left: 305, top: 42
+    rect 38, 0, width-38, 35, fill: "#CDC"
+    rect 38, 0, width-38, 38, fill: black.push(0.05)..black.push(0.2)
     @tabs, @tables = [], HH::DB.tables
     @scripts = HH.scripts
-    stack :margin => 0, :margin_left => 0 do
-      stack do
-        background "#CDC", :height => 35
-        background black(0.05)..black(0.2), :height => 38
-        flow do
-          hometab "Programs", "#555", true do
-            @homepane.clear { home_scripts }
-          end
-          hometab "Samples", "#555", false do
-            @homepane.clear { sample_scripts }
-          end
-        end
-      end
+
+    hometab "Programs", true, 50, 13 do
+      #@homepane.clear { home_scripts }
+    end
+    hometab "Samples", false, 168, 13 do
+      #@homepane.clear { sample_scripts }
+    end
+    rect 38, 38, 300, 4, fill: rgb(233, 239, 224)
+
+=begin
       stack do
         @homepane = stack do
           home_scripts
@@ -169,6 +150,6 @@ class HH::SideTabs::Home < HH::SideTab
       end
       @bulletin_stack = stack do
       end
-    end
+=end
   end
 end

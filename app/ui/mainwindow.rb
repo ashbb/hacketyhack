@@ -57,6 +57,7 @@ Shoes.app :title => "Hackety Hack", :width => w, :height => h do
   extend HH::App, HH::Widgets, HH::Observable
   style(Shoes::LinkHover, :fill => nil, :stroke => "#C66")
   style(Shoes::Link, :stroke => "#377")
+  nostroke
 
   @main_content = flow do
     background "#e9efe0", height: h
@@ -98,9 +99,8 @@ Shoes.app :title => "Hackety Hack", :width => w, :height => h do
     exit
   end
 
-=begin
   opentab :Home
-
+=begin
   @tour_notice =
   stack :top => 46, :left => 22, :width => 250, :height => 54, :hidden => true do
     fill black(0.6)

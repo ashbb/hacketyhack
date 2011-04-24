@@ -16,9 +16,9 @@ class HH::SideTabs
       (tips.push nil; next) if tab == 'Dummy'
       y = i*26+4
       slot.app.instance_eval do
-        tips << [rect(38, y, 100, 24, fill: "#F7A", curve: 4, strokewidth: 0, hidden: true), 
-          rect(38, y, 10, 24, fill: "#F7A", strokewidth: 0, hidden: true), 
-          para(fg(tab, white), left: 44, top: y+2, hidden: true)]
+        tips << [rect(38, y, 100, 24, fill: "#F7A", curve: 4, hidden: true, front: true), 
+          rect(38, y, 10, 24, fill: "#F7A", hidden: true, front: true), 
+          para(fg(tab, white), left: 44, top: y+2, hidden: true, front: true)]
       end
     end
     tip = {}
