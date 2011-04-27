@@ -8,34 +8,30 @@
 
 # a glossy button
 class Glossb < Shoes::Widget
-  def initialize(name, opts={}, &blk)
+  def initialize name, opts={}, &blk
+    l, t, w, h, mg = opts[:left], opts[:top], opts[:width], opts[:height], opts[:margin]
     fg, bgfill = "#777", "#DDD"
     case opts[:color]
       when "dark"; fg, bgfill = "#CCC", "#000"
       when "yellow"; fg, bgfill = "#FFF", "#7AA"
       when "red"; fg, bgfill = "#FF5", "#F30"
     end
+    fg = tr_color fg
+    bgfill = tr_color bgfill
 
-    txt = link(name, :underline => 'none', :stroke => fg) {}
-    stack :margin => 4 do
-      background bgfill, :curve => 5
-      @txt = para txt, :align => 'center', :margin => 4, :size => 11
-      hover { @over.show }
-      leave { @over.hide }
-    end
+    @glossb = []
+    @glossb << rect(l, t, w, h, curve: 5, fill: bgfill)
+    @glossb << para(fg(name, fg), left: l+mg[0], top: t+mg[1], size: 11)
+    @glossb << rect(l-10, t-5, w+20, h+10, curve: 5, fill: bgfill, hidden: true)
+    @glossb << para(fg(strong(name), fg), left: l+mg[0]-5, top: t+mg[1]-3, size: 14, hidden: true)
 
-    @over = stack :top => 0, :left => 0, :margin => 2, :hidden => true do
-      background bgfill, :curve => 5
-      @txt_over = para txt, :align => 'center', :margin => 4, :size => 14, :weight => "bold"
-    end
-    @fg = fg
-    click &blk
+    @glossb[0].hover{@glossb[2].show; @glossb[3].show}
+    @glossb[0].leave{@glossb[2].hide; @glossb[3].hide}
+    @glossb[2].click{@glossb.each &:clear; blk.call}
   end
 
-  def text= txt
-    new_link = link(txt, :underline => 'none', :stroke => @fg) {}
-    @txt.replace(new_link)
-    @txt_over.replace(new_link)
+  def clear
+    @glossb.each &:clear
   end
 end
 

@@ -25,16 +25,20 @@ class HH::SideTabs::Home < HH::SideTab
   # auxiliary method to displays the arrows, for example in case
   # more than 5 programs have to be listed
   def home_arrows meth, start, total
-    stack :top => 0, :right => 10 do
-      nex = total > start + 5
-      if start > 0
-        glossb "<<", :top => 0, :right => 10 + (nex ? 100 : 0), :width => 50 do
+    nex = total > start + 5
+    if start > 0
+      @gb1 = glossb "&lt;&lt;", left: 400, top: 50, width:50, height: 30, margin: [13, 5] do
+        @slot.append do
           @homepane.clear { send(meth, start - 5) }
+          flush
         end
       end
-      if nex
-        glossb "Next 5 >>", :top => 0, :right => 10, :width => 100 do
+    end
+    if nex
+      @gb2 = glossb "Next 5 >>", left: 470, top: 50, width:100, height: 30, margin: [10, 5] do
+        @slot.append do
           @homepane.clear { send(meth, start + 5) }
+          flush
         end
       end
     end
@@ -42,10 +46,14 @@ class HH::SideTabs::Home < HH::SideTab
 
 
   def home_scripts start=0
+    @gb1.clear if @gb1
+    @gb2.clear if @gb2
     display_scripts @scripts, start
   end
 
   def sample_scripts start=0
+    @gb1.clear if @gb1
+    @gb2.clear if @gb2
     display_scripts @samples, start, true
   end
 
@@ -77,11 +85,8 @@ class HH::SideTabs::Home < HH::SideTab
           end
         end
       end
-      # FIXME: sometimes :sample_scripts
-=begin
       m = samples ? :sample_scripts : :home_scripts
       home_arrows m, start, scripts.length
-=end
     end
   end
 
