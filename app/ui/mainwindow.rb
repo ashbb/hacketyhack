@@ -88,9 +88,9 @@ Shoes.app :title => "Hackety Hack", :width => w, :height => h do
     about = []
     about << rect(100, 30, width-170, height-60, fill: white)
     about << image("#{HH::STATIC}/hhabout.png", top: 30, left: 100)
-    timer(0.01){about[0].click{@gb.clear; about.each &:clear}}
     glossb "OK", left: width-170, top: height-100, width:50, height: 30, margin: [13, 5], color: "dark" do
       about.each &:clear
+      about[1].parent.contents.delete about[1]
     end
   end
   13.times{addtab :Dummy}
