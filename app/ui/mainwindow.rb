@@ -86,12 +86,12 @@ Shoes.app :title => "Hackety Hack", :width => w, :height => h do
   end
   addtab :About, :icon => "tab-hand.png" do
     about = []
-    about << rect(100, 30, width-170, height-60, fill: white, strokewidth: 0)
+    about << rect(100, 30, width-170, height-60, fill: white)
     about << image("#{HH::STATIC}/hhabout.png", top: 30, left: 100)
-    timer(0.01){about[0].click{about.each &:clear}}
-    #glossb "OK", :top => 500, :left => 0.45, :width => 70, :color => "dark" do
-      #  about.remove
-    #end
+    timer(0.01){about[0].click{@gb.clear; about.each &:clear}}
+    glossb "OK", left: width-170, top: height-100, width:50, height: 30, margin: [13, 5], color: "dark" do
+      about.each &:clear
+    end
   end
   13.times{addtab :Dummy}
   addtab :Prefs, :hover => "Preferences", :icon => "tab-properties.png"
