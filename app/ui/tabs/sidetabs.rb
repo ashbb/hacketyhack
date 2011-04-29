@@ -84,6 +84,7 @@ class HH::SideTabs
   end
 
   def opentab symbol
+    return if symbol == @current_tab.class.to_s.split('::').last.to_sym
     tab = gettab symbol
     if tab.has_content?
       @current_tab.close if @current_tab
@@ -150,7 +151,11 @@ class HH::SideTab
 
   def close
     if has_content?
-      @content.hide
+      (@slot.clear; @slot.contents = []) if @slot
+      (@homepane.clear; @homepane.contents = []) if @homepane
+      @tabs.flatten.each &:clear if @tabs
+      @gbs.each &:clear if @gbs
+      @bgs.each &:clear if @bgs
     end
   end
 

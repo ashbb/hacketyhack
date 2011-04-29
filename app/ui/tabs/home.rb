@@ -27,7 +27,7 @@ class HH::SideTabs::Home < HH::SideTab
   def home_arrows meth, start, total
     nex = total > start + 5
     if start > 0
-      @gb1 = glossb "&lt;&lt;", left: 400, top: 50, width:50, height: 30, margin: [13, 5] do
+      @gbs[0] = glossb "&lt;&lt;", left: 400, top: 50, width:50, height: 30, margin: [13, 5] do
         @slot.append do
           @homepane.clear { send(meth, start - 5) }
           flush
@@ -35,7 +35,7 @@ class HH::SideTabs::Home < HH::SideTab
       end
     end
     if nex
-      @gb2 = glossb "Next 5 >>", left: 470, top: 50, width:100, height: 30, margin: [10, 5] do
+      @gbs[1] = glossb "Next 5 >>", left: 470, top: 50, width:100, height: 30, margin: [10, 5] do
         @slot.append do
           @homepane.clear { send(meth, start + 5) }
           flush
@@ -46,14 +46,12 @@ class HH::SideTabs::Home < HH::SideTab
 
 
   def home_scripts start=0
-    @gb1.clear if @gb1
-    @gb2.clear if @gb2
+    @gbs.each{|e| e.clear if e}
     display_scripts @scripts, start
   end
 
   def sample_scripts start=0
-    @gb1.clear if @gb1
-    @gb2.clear if @gb2
+    @gbs.each{|e| e.clear if e}
     display_scripts @samples, start, true
   end
 
@@ -131,9 +129,12 @@ class HH::SideTabs::Home < HH::SideTab
 
   # creates the content of the home tab
   def content
-    image("#{HH::STATIC}/hhhello.png").move 305, 42
-    rect 38, 0, width-38, 35, fill: "#CDC"
-    rect 38, 0, width-38, 38, fill: black.push(0.05)..black.push(0.2)
+    @bgs, @gbs = [], []
+    img = image("#{HH::STATIC}/hhhello.png")
+    img.move 305, 42
+    @bgs << img
+    @bgs << rect(38, 0, width-38, 35, fill: "#CDC")
+    @bgs << rect(38, 0, width-38, 38, fill: black.push(0.05)..black.push(0.2))
     @tabs, @tables = [], HH::DB.tables
     @scripts = HH.scripts
 
