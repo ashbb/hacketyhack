@@ -27,11 +27,11 @@ class Glossb < Shoes::Widget
 
     @glossb[0].hover{@glossb[2].show; @glossb[3].show}
     @glossb[0].leave{@glossb[2].hide; @glossb[3].hide}
-    @glossb[2].click{@glossb.each &:clear; blk.call}
+    @glossb[2].click{@glossb.clear; blk.call}
   end
 
   def clear
-    @glossb.each &:clear
+    @glossb.clear
   end
 end
 

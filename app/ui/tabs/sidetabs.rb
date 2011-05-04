@@ -151,11 +151,9 @@ class HH::SideTab
 
   def close
     if has_content?
-      (@slot.clear; @slot.contents = []) if @slot
-      (@homepane.clear; @homepane.contents = []) if @homepane
-      @tabs.flatten.each &:clear if @tabs
-      @gbs.each &:clear if @gbs
-      @bgs.each &:clear if @bgs
+      [@slot, @homepane, @tabs, @gbs, @bgs].clear
+      @slot.contents = [] if @slot
+      @homepane.contents = [] if @homepane
     end
   end
 
