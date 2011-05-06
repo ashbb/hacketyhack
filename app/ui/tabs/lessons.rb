@@ -13,30 +13,43 @@ class HH::SideTabs::Lessons < HH::SideTab
     @@lessons << [@@difficulty, name, blk]
   end
 
+  def on_click
+    reset
+  end
+
   # draws the lessons tab
   def content
-    stack :margin => 10 do
-      title "Lessons", :font => "Phonetica"
-      @@lessons = []
-      @@difficulty = "About Hackety"
-      para "So you want to learn some programming, eh? You've come to the right place!"
-      Dir["#{HH::LESSONS}/*.rb"].each { |f| load f }
+    @slot.append do
+      stack width: 372, margin: 10 do
+        title "Lessons", font: "Coolvetica"
+        @@lessons = []
+        @@difficulty = "About Hackety"
+        para "So you want to learn some programming, eh? You've come to the right place!"
+        Dir["#{HH::LESSONS}/*.rb"].each { |f| load f }
 
-      %w[beginner intermediate advanced expert].each do |d|
-        @@difficulty = d.capitalize
-        Dir["#{HH::LESSONS}/#{d}/*.rb"].each { |f| load f }
-      end
+        %w[beginner intermediate advanced expert].each do |d|
+          @@difficulty = d.capitalize
+          Dir["#{HH::LESSONS}/#{d}/*.rb"].each { |f| load f }
+        end
 
-      @@lessons.group_by{|i| i[0]}.each do |key, value|
-        para key.to_s
-        value.each do |v|
-          stack do
-            britelink "icon-file.png", v[1] do
-              HH::APP.start_lessons name, v[2]
+        @@lessons.group_by{|i| i[0]}.each do |key, value|
+          tagline key.to_s
+          value.each do |v|
+            stack do
+              britelink "icon-file.png", v[1] do
+                #HH::APP.start_lessons name, v[2]
+                @lesson_area.show
+              end
             end
           end
         end
       end
+      @lesson_area = stack width: 420, height: height, margin: 10, hidden: true do
+        background rgb 25, 25, 25
+        para fg 'Under construction...', white
+      end
+      @lesson_area.click{@lesson_area.hide}
+      flush
     end
   end
 end

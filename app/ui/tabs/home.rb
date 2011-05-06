@@ -150,7 +150,7 @@ class HH::SideTabs::Home < HH::SideTab
         flush
       end
     end
-    rect 38, 38, 300, 4, fill: rgb(233, 239, 224)
+    @bgs << rect(38, 38, 300, 4, fill: rgb(233, 239, 224))
 
     @slot.append do
       stack(height: 40){}

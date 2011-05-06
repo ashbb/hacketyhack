@@ -34,7 +34,7 @@ class HH::SideTabs
         background "#7aa", :width => 12
         background "#77a", :width => 6
       end
-      right = stack width: width() - 38, height: height
+      right = flow width: width() - 38, height: height
       sidetabs.instance_eval{@left, @right, @tip = left, right, tip}
     end
   end

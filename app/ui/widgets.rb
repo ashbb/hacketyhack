@@ -250,7 +250,7 @@ module HH::Widgets
     flow width: 300, margin: [4, 2, 4, 4] do
       b = background bg, curve: 6, height: 29, hidden: true
       img = image HH::STATIC + "/" + icon, margin_top: 3
-      p1 = para link(fg(name, black)){alert name}, size: 13, width: 200
+      p1 = para link(fg(name, black)){blk.call}, size: 13, width: 200
       para(fg(time.short, tr_color("#396")), size: 9, width: 50, margin_top: 4) if time
       p1.hover{b.show}
       p1.leave{b.hide}
