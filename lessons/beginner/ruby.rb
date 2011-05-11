@@ -4,9 +4,9 @@ lesson_set "Beginner Ruby" do
 
   lesson "Hello there!"
   page "Let's get started" do
-    para "Welcome to your first lesson in Ruby! You're going to have a blast."
+    para "Welcome to your first lesson in Ruby! You're going to have a blast.", "\n"
     para "Ruby is a great programming language that you can use to make all kinds of ",
-         "things with. Let's get going!"
+         "things with. Let's get going!", "\n"
     flow do
       para "(click the little "
       icon_button :arrow_right, nil do

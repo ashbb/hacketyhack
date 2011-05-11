@@ -109,7 +109,9 @@ class HH::LessonContainer
   # part of the lesson DSL, executes the page block
   def set_content &blk
     delete_event_connections
-    @slot.clear { instance_eval &blk }
+    @slot.clear{}
+    s = self
+    @slot.append{s.instance_eval &blk; flush}
   end
 
   def on_event *args, &blk

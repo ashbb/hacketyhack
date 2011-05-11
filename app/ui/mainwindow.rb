@@ -7,8 +7,9 @@ module HH::App
   # starts a lesson
   # returns only once the lesson gets closed
   include HH::Markup
-  def start_lessons name, blk
+  def start_lessons name, blk, lesson_area
     @main_content.style(:width => -400)
+    @lesson_stack = lesson_area
     @lesson_stack.show
     l = HH::LessonSet.new(name, blk).execute_in @lesson_stack
     l.on_event :close do hide_lesson end
@@ -58,6 +59,8 @@ Shoes.app :title => "Hackety Hack", :width => w, :height => h do
   style Shoes::LinkHover, stroke: "#C66", underline: false
   style Shoes::Link, stroke: "#377", underline: false
   nostroke
+
+  alias :icon_button :iconbutton
 
   @main_content = flow do
     background "#e9efe0", height: h

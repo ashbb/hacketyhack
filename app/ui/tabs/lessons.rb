@@ -37,18 +37,13 @@ class HH::SideTabs::Lessons < HH::SideTab
           value.each do |v|
             stack do
               britelink "icon-file.png", v[1] do
-                #HH::APP.start_lessons name, v[2]
-                @lesson_area.show
+                HH::APP.start_lessons v[1], v[2], @lesson_area
               end
             end
           end
         end
       end
-      @lesson_area = stack width: 420, height: height, margin: 10, hidden: true do
-        background rgb 25, 25, 25
-        para fg 'Under construction...', white
-      end
-      @lesson_area.click{@lesson_area.hide}
+      @lesson_area = stack(width: 420, height: height, margin: 10, hidden: true){}
       flush
     end
   end

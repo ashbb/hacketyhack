@@ -5,7 +5,7 @@ lesson_set "A Tour of Hackety Hack" do
     flow do
     para "This whole side of the screen is the ", em("Hackety Hack Tutor"),
           ". You can move forward through the lessons by clicking the ", 
-          em("Next"), " button("
+          em("Next"), " button(", "\n"
     icon_button :arrow_right, nil do
       alert "You should click on the actual button, below! =)"
     end

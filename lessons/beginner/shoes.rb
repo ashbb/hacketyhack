@@ -5,9 +5,9 @@ lesson_set "Beginner Shoes" do
   lesson "Hello there!"
   page "Let's get started" do
     para "Welcome to your first lesson about Shoes! I'm going to introduce you to the ",
-         "basics that Shoes brings to everyone who programs."
+         "basics that Shoes brings to everyone who programs.", "\n"
     para "If you didn't know, Shoes is a Ruby toolkit that lets you build GUI programs ",
-         "really easy and fun!"
+         "really easy and fun!", "\n"
     flow do
       para "(click the little "
       icon_button :arrow_right, nil do

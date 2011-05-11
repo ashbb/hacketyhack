@@ -40,6 +40,7 @@ class IconButton < Shoes::Widget
 #  MARGIN = 8
 #  SIZE = BSIZE + MARGIN * 2
   def initialize (type, tooltip, opts={}, &blk)
+=begin
     strokewidth 1
     nofill
 
@@ -78,6 +79,7 @@ class IconButton < Shoes::Widget
     end
 
     click &blk
+=end
   end
   
   def create_tooltip

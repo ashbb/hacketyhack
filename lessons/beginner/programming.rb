@@ -4,11 +4,11 @@ lesson_set "Beginner Programming" do
   page "Round One" do
     para "So, you'd like to learn how to hack code with the best of 'em, eh? Well, ",
       "you've come to the right place. This is the very first lesson I have to ",
-      "share with you. It all starts here."
+      "share with you. It all starts here.", "\n\n"
     para "I want to get you started off on the best possible foot with making ",
       "programs, so we'll start off by talking a little bit about what ",
       "programming is, and then we'll write some basic programs to draw fun ",
-      "things on the screen. Sound good? Off we go!"
+      "things on the screen. Sound good? Off we go!", "\n\n"
     flow do
       para "(click the little "
       icon_button :arrow_right, nil do
