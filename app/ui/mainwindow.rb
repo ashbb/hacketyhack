@@ -16,8 +16,9 @@ module HH::App
   end
 
   def hide_lesson
-    @lesson_stack.hide
-    @main_content.style(:width => 1.0)
+    #@lesson_stack.hide
+    #@main_content.style(:width => 1.0)
+    @lesson_stack.clear
   end
 
   def load_file name={}

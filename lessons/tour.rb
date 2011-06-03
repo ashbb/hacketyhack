@@ -4,12 +4,12 @@ lesson_set "A Tour of Hackety Hack" do
     para "Welcome to the Hackety Hack tour!"
     flow do
     para "This whole side of the screen is the ", em("Hackety Hack Tutor"),
-          ". You can move forward through the lessons by clicking the ", 
-          em("Next"), " button(", "\n"
+          ". You can move forward through the lessons by clicking \n"
+    para "the ", em("Next"), " button( ", width: 120
     icon_button :arrow_right, nil do
       alert "You should click on the actual button, below! =)"
     end
-    para "). Give it a shot!"
+    para " ). Give it a shot!", width: 120
   end end
 
   page "Good Job!" do

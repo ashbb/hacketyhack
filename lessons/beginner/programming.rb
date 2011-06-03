@@ -10,11 +10,12 @@ lesson_set "Beginner Programming" do
       "programming is, and then we'll write some basic programs to draw fun ",
       "things on the screen. Sound good? Off we go!", "\n\n"
     flow do
-      para "(click the little "
+      para "(click the little ", width: 100
       icon_button :arrow_right, nil do
         alert "Not this one! The one below!"
       end
-      para " on the bottom of the screen to get started)"
+      para " on the bottom of the screen to get", width: 250
+      para " started)"
     end
   end
 

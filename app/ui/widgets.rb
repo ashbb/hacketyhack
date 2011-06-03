@@ -40,46 +40,24 @@ class IconButton < Shoes::Widget
 #  MARGIN = 8
 #  SIZE = BSIZE + MARGIN * 2
   def initialize (type, tooltip, opts={}, &blk)
-=begin
-    strokewidth 1
-    nofill
-
-    @tooltip_text = tooltip
-
-    stack do
-      stack :margin => 8, :width => 32, :height => 32 do
-        stroke white
-        send type
-      end
-
-      hover do
-        @over.show
-        if @tooltip_text
-          create_tooltip
-        end
-      end
-      leave do
-        @over.hide
-        if @tooltip
-          @tooltip.hide
-          @tooltip.remove
-          @tooltip = nil
-        end
-      end
+    over = stack(width: 16, height: 16){}
+    @bgs = []
+    over.hover{@bgs.flatten.each &:show}
+    over.leave{@bgs.flatten.each &:hide}
+    over.click{blk.call}
+    timer 0.01 do
+      @bgs << rect(over.left, over.top, 16, 16, hidden: true, strokewidth: 0, fill: gray(0.8))
+      strokewidth 1
+      stroke white
+      nofill
+      $ICONBUTTONS << send(type, over.left, over.top)
+      stroke black
+      @bgs << send(type, over.left, over.top)
+      @bgs.last.each &:hide
+      strokewidth 0
+      fill black
+      $ICONBUTTONS << @bgs
     end
-
-    style(:width => 32)
-
-    stack :margin => 8, :top => 0, :left => 0 do
-       @over = stack :width => 16, :height => 16, :hidden => true do
-        background gray(0.8)
-        stroke black
-        send type
-      end
-    end
-
-    click &blk
-=end
   end
   
   def create_tooltip
@@ -95,28 +73,28 @@ class IconButton < Shoes::Widget
           :fill => red, :stroke => white)
   end
 
-  def arrow_right
-    line(1, 8, 14, 8)
-    line(14, 8, 10, 1+3)
-    line(14, 8, 10, 15-3)
+  def arrow_right x, y
+    [line(x+1, y+8, x+14, y+8), 
+     line(x+14, y+8, x+10, y+1+3), 
+     line(x+14, y+8, x+10, y+15-3)]
   end
 
-  def arrow_left
-    line(1, 8, 14, 8)
-    line(1, 8, 6, 1+3)
-    line(1, 8, 6, 15-3)
+  def arrow_left x, y
+    [line(x+1, y+8, x+14, y+8), 
+     line(x+1, y+8, x+6, y+1+3), 
+     line(x+1, y+8, x+6, y+15-3)]
   end
 
-  def x
-    line(2, 2, 13, 13)
-    line(2, 13, 13, 2)
+  def x x, y
+    [line(x+2, y+2, x+13, y+13), 
+     line(x+2, y+13, x+13, y+2)]
   end
 
-  def menu
-    rect 2, 2, 11, 11
-    line 4, 6, 11, 6
-    line 4, 8, 11, 8
-    line 4, 10, 11, 10
+  def menu x, y
+    [rect(x+2, y+2, 11, 11), 
+     line(x+4, y+6, x+11, y+6), 
+     line(x+4, y+8, x+11, y+8), 
+     line(x+4, y+10, x+11, y+10)]
   end
 end
 

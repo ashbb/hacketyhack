@@ -24,6 +24,8 @@ module HH::LessonContainerText
     :matching => {:stroke => "#f00", :weight => "bold"},
   }
 
+  $ICONBUTTONS = []
+
   # merges options +opts+ with those of +args+ if any
   def merge_opts(args, opts)
     res = args.dup
@@ -62,6 +64,7 @@ module HH::LessonContainerText
 
   include HH::Markup
   def embed_code str, opts={}
+=begin
     stack :margin_bottom => 12 do
       background "#602", :curve => 4
       para highlight(str, nil, COLORS), CODE_STYLE
@@ -78,6 +81,7 @@ module HH::LessonContainerText
         end
       end
     end
+=end
   end
 end
 
@@ -110,6 +114,7 @@ class HH::LessonContainer
   def set_content &blk
     delete_event_connections
     @slot.clear{}
+    $ICONBUTTONS.clear
     s = self
     @slot.append{s.instance_eval &blk; flush}
   end
@@ -229,12 +234,12 @@ class HH::LessonSet
     lesson_set = self
 
     @container.set_content do
-      background gray(0.1)
+      background(gray(0.1))
 
       lesson_name, pages = lessons[lesson]
       page_title, page_block = pages[page]
 
-      stack :margin => 10, :height => -32, :scroll => true do
+      stack margin: 10, height: height - 55 do
         # if first page of a lesson display the lesson name
         if page == 0
           title "#{lesson+1}. #{lesson_name}"
@@ -247,17 +252,21 @@ class HH::LessonSet
         instance_eval &page_block
       end
       
-      flow :height => 32,  :bottom => 0, :right => 0 do
-        icon_button :arrow_left, "Previous", :left => 10 do
+      flow do
+        flow(width: 10){}
+        icon_button :arrow_left, "Previous" do
           lesson_set.previous_page
         end
-        icon_button :arrow_right, "Next", :left => 100 do
+        flow(width: 30){}
+        icon_button :arrow_right, "Next" do
           lesson_set.next_page
         end
-        icon_button :menu, "Index", :left => 55 do
+        flow(width: 30){}
+        icon_button :menu, "Index" do
           lesson_set.show_menu
         end
-        icon_button :x, "Close", :right => 10 do
+        flow(width: 240){}
+        icon_button :x, "Close" do
           lesson_set.close_lesson
         end
       end
@@ -292,6 +301,7 @@ class HH::LessonSet
 
   # calls finalization
   def close_lesson
+    $ICONBUTTONS.clear
     save_lesson
     @container.delete_event_connections
     @@open_lesson = nil
