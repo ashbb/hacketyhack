@@ -44,7 +44,7 @@ class IconButton < Shoes::Widget
     @bgs = []
     over.hover{@bgs.flatten.each &:show}
     over.leave{@bgs.flatten.each &:hide}
-    over.click{blk.call}
+    over.click{blk.call} if tooltip
     timer 0.01 do
       @bgs << rect(over.left, over.top, 16, 16, hidden: true, strokewidth: 0, fill: gray(0.8))
       strokewidth 1

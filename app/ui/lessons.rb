@@ -5,7 +5,7 @@ module HH::LessonContainerText
   TITLES = {:font => "Lacuna Regular", :stroke => "#e06", :margin => 4}
   PARAS = {:stroke => "#eec", :size => 11, :margin_bottom => 6}
   LIST = {:margin_left => 20, :margin => 4, :size => 10}
-  CODE_STYLE = {:size => 9, :margin => 8, :font => "Liberation Mono",
+  CODE_STYLE = {:size => 9, :margin => 8, #:font => "Liberation Mono",
     :stroke => "#000"}
   COLORS = {
     :comment => {:stroke => "#bba"},
@@ -64,24 +64,24 @@ module HH::LessonContainerText
 
   include HH::Markup
   def embed_code str, opts={}
-=begin
-    stack :margin_bottom => 12 do
+    stack width: 375 do
       background "#602", :curve => 4
-      para highlight(str, nil, COLORS), CODE_STYLE
+      #para highlight(str, nil, COLORS), CODE_STYLE
       if opts[:run_button]
-        stack :top => 0, :right => 2, :width => 70 do
-          stack do
-            background "#8A7", :margin => [0, 2, 0, 2], :curve => 4
+        flow do
+          stack(width: 315, height: 16){}
+          stack width: 60, height: 16 do
+            background "#8A7", :curve => 4
             l = link("Run this", :stroke => "#eee", :underline => "none") do
               eval(str, TOPLEVEL_BINDING)
             end
-            para l, :margin => 4, :align => 'center',
+            para l, :align => 'center',
               :weight => 'bold', :size => 9
           end
         end
       end
+      para str, CODE_STYLE
     end
-=end
   end
 end
 
