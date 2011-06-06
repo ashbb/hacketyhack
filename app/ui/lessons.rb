@@ -56,7 +56,8 @@ module HH::LessonContainerText
   # module is included at all but it is...
   def link *a, &b; app.link *a, &b end
   def code *args
-    super *merge_opts( args, {:stroke => "#9de", :fill => "#237"} )
+    #super *merge_opts( args, {:stroke => "#9de", :fill => "#237"} )
+    bg(fg((super args), tr_color("#9de")), tr_color("#237"))
   end
   def prompt *args
     code *merge_opts( args, {:stroke => "#EEE", :fill => "#602"} )
