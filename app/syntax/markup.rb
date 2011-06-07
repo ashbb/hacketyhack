@@ -45,28 +45,36 @@ module HH::Markup
     tokens.each do |token|
       res <<
         if colors[token.group]
-          span(token, colors[token.group])
+          #span(token, colors[token.group])
+          tmp = fg(token, tr_color(colors[token.group][:stroke]))
+          colors[token.group][:fill] ? bg(tmp, tr_color(colors[token.group][:fill])) : tmp
         elsif colors[:any]
-          span(token, colors[:any])
+          #span(token, colors[:any])
+          tmp = fg(token, tr_color(colors[:any][:stroke]))
+          colors[:any][:fill] ? bg(tmp, tr_color(colors[:any][:fill])) : tmp
         else
           token
         end
     end
 
     if pos.nil? or pos < 0
-      return res
+      return res.join
     end
 
     token_index, matching_index = matching_token(tokens, pos)
 
     if token_index
-      res[token_index] = span(tokens[token_index], colors[:matching])
+      #res[token_index] = span(tokens[token_index], colors[:matching])
+      tmp = fg(tokens[token_index], tr_color(colors[:matching][:stroke]))
+      res[token_index] = colors[:matching][:fill] ? bg(tmp, tr_color(colors[:matching][:fill])) : tmp
       if matching_index
-        res[matching_index] = span(tokens[matching_index], colors[:matching])
+        #res[matching_index] = span(tokens[matching_index], colors[:matching])
+        tmp = fg(tokens[matching_index], tr_color(colors[:matching][:stroke]))
+        res[matching_index] = colors[:matching][:fill] ? bg(tmp, tr_color(colors[:matching][:fill])) : tmp
       end
     end
 
-    res
+    res.join
   end
 
 private

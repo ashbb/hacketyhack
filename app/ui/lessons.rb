@@ -9,7 +9,7 @@ module HH::LessonContainerText
     :stroke => "#000"}
   COLORS = {
     :comment => {:stroke => "#bba"},
-    :keyword => {:stroke => "#FCF90F"},
+    :keyword => {:stroke => "#FCF91F"},
     :method => {:stroke => "#C09", :weight => "bold"},
     :symbol => {:stroke => "#9DF3C6"},
     :string => {:stroke => "#C9F5A5"},
@@ -81,7 +81,8 @@ module HH::LessonContainerText
           end
         end
       end
-      para str, CODE_STYLE
+      #para str, CODE_STYLE
+      para highlight(str, nil, COLORS), CODE_STYLE
     end
   end
 end
@@ -119,7 +120,7 @@ class HH::LessonContainer
     s = self
     @slot.append{s.instance_eval &blk; flush}
   end
-
+  
   def on_event *args, &blk
     conn = app.on_event(*args, &blk)
     @event_connections << conn
@@ -193,15 +194,16 @@ class HH::LessonSet
     end
   end
 
-  def show_menu
+  def show_menu page2 = false
     name, lessons = @name, @lessons
+    lessons = page2 ? @lessons[4..-1] : @lessons[0..3]
     lesson_set = self
     @container.set_content do
       background gray(0.1)
-      stack :margin => 10, :height => -32, :scroll => true do
+      stack height: height - 55, margin: -8 do
         title name
 
-        lesson_i = 0
+        lesson_i = page2 ? 4 : 0
         lessons.each do |name, pages|
           lesson = lesson_i
           lesson_i += 1
@@ -220,8 +222,23 @@ class HH::LessonSet
           end
         end
       end
-      flow :height => 32,  :bottom => 0, :right => 0 do
-        icon_button :x, :right => 10 do
+      flow do
+        w = 0
+        if page2
+          flow(width: 10){}
+          icon_button :arrow_left, "Previous" do
+            lesson_set.show_menu
+          end
+          w = 330
+        else
+          flow(width: 30){}
+          icon_button :arrow_right, "Next" do
+            lesson_set.show_menu :page2
+          end
+          w = 310
+        end
+        flow(width: w){}
+        icon_button :x, "Close" do
           lesson_set.close_lesson
         end
       end

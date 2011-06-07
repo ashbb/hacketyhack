@@ -8,71 +8,76 @@ lesson_set "Beginner Ruby" do
     para "Ruby is a great programming language that you can use to make all kinds of ",
          "things with. Let's get going!", "\n"
     flow do
-      para "(click the little "
+      para "(click the little ", width: 100
       icon_button :arrow_right, nil do
         alert "Not this one! The one below!"
       end
-      para " on the bottom of the screen to get started)"
+      para " on the bottom of the screen to get", width: 250
+      para " started)"
     end
   end
 
   page "Lesson Controls" do
     para "Before we move on, Here's a refresher on the controls you can use ",
-      "to move around in the Lesson."
+      "to move around in the Lesson.\n"
     flow do
       icon_button :arrow_left, nil
-      para strong("back"), ": goes back one page"
+      para strong(" back"), ": goes back one page", width: 200
     end
     flow do
       icon_button :arrow_right, nil
-      para strong("continue"), ": goes to the next page"
+      para strong(" continue"), ": goes to the next page", width: 250
     end
     flow do
       icon_button :menu, nil
-      para strong("menu"), ": makes it easy to jump around to any lesson"
+      para strong(" menu"), ": makes it easy to jump around to any lesson", width: 350
     end
     flow do
       icon_button :x, nil
-      para strong("close"), ": closes the tutor"
+      para strong(" close"), ": closes the tutor", width: 200
     end
-    para "Don't forget! Press "
-    icon_button :arrow_right, nil
-    para "to move to the next part. Have at it!"
+    flow do
+      para "Don't forget! Press ", width: 130
+      icon_button :arrow_right, nil
+      para " to move to the next part. Have", width: 300
+      para "at it!"
+    end
   end
 
   lesson "A bit more about Ruby"
   page "Konnichiwa, Ruby!" do # can't do 日本語 without a bunch of work...
     flow do # due to multiple fonts...
-      para em("Ruby"), " was created by "
-      para "まつもと ゆきひろ", :font => "TakaoGothic"
+      para em("Ruby"), " was created by ", width: 150
+      para "まつもと ゆきひろ", :font => "MS UI Gothic", width: 150
       para " (you can just call him Matz) in 1995. If you couldn't guess, Matz is ",
-           "from Japan. Here he is:"
+           "from Japan. Here he is:\n"
     end
-    image "#{HH::STATIC}/matz.jpg"
+    image "#{HH::STATIC}/matz.jpg", margin_top: -5
   end
 
   page "Ruby is enjoyable" do
-    para "Matz has this to say about Ruby:\n"
+    para "Matz has this to say about Ruby:"
     para em("I hope to see Ruby help every programmer in the world to be productive, and to enjoy programming, and to be happy. That is the primary purpose of Ruby language.\n")
     para "One more thing about Ruby: Rubyists (that's what people who like Ruby call ",
          "themselves) have a saying: ", strong("MINSWAN"), ". This stands for ", 
          strong("M"), "atz ", strong("I"), "s ", strong("N"), "ice ", 
          strong("S"), "o ", strong("W"), "e ", strong("A"), "re ", strong("N"), "ice. ",
          "Which is a pretty nice saying, itself. Be nice to everyone, and give them ",
-         "a hand when they need it!"
+         "a hand when they need it!\n\n"
 
   end
 
   lesson "Displaying Things"
   page "Let's do this!" do
     para "Okay! The very first thing that you need to know is how to show something ",
-         "on the screen. Otherwise, you won't know what's going on!"
+         "on the screen. Otherwise, you won't know what's going on!\n"
     flow do
-      para "In order to start coding, we need to bring up the Editor. Click the ("
-      image "#{HH::STATIC}/tab-new.png", :margin => 6 do
+      para "In order to start coding, we need to bring up the Editor. "
+      para "Click the ( ", width: 70
+      image "#{HH::STATIC}/tab-new.png" do
         alert("Not this one, silly! the one on the left!")
       end
-      para ") to open it up."
+      para " ) to open it up.", width: 160
     end
     next_when :tab_opened, :Editor
   end
@@ -89,57 +94,57 @@ lesson_set "Beginner Ruby" do
          "two parts work just like an English sentence: The ", code("alert"), " is a ",
          'verb and the stuff in the ""s is an object. In Ruby, we call verbs ',
          strong("methods"), ". The ", code("alert"), " verb says 'Put an alert box ",
-         "on the screen, and the content of the box is whatever thing you give me.'"
+         "on the screen, and the content of the box is whatever thing you give me.'\n\n\n"
     para "We'll talk about the ", code('"Hello, world!"'), " in just a second. Here's ",
-         "the other way of making this happen: "
+         "the other way of making this happen: \n"
     embed_code 'puts "Hello, world!"'
     para "But if you try that here, it won't work! The ", code("puts"), " method ",
          "doesn't display a dialog box, it puts text out to a command-line prompt. ",
          "Since Hackety Hack is all graphical, this doesn't work here. So we'll ",
          "be using ", code("alert"), "s throughout these tutorials, but if you look ",
-         "at other Ruby tutorials, you may see ", code("puts"), "."
+         "at other Ruby tutorials, you may see ", code("puts"), ".\n\n\n"
   end
 
-  lesson "Letters, words, and sentences"
+  lesson "Letters, words, and sentences "
   page "Strings" do
     para "Okay! Now that you've got that verb bit down, it's time to learn about ",
          em("String"), "s. Strings are what we call a bunch of words between a pair ",
          "of \" characters. The \"s are used to tell the computer what words you ",
-         "actually want to say. Let's think about our example:"
+         "actually want to say. Let's think about our example:\n\n"
     embed_code 'alert "Hello, world!"'
     para "If you didn't have the \"s, the computer wouldn't know which words were ",
-         "methods and which ones were part of the string! And consider this:"
+         "methods and which ones were part of the string! And consider this:\n"
     embed_code 'alert "I am on high alert!"', :run_button => true
     para "Without making all of those words a string, how would Ruby know that the ",
-         "second alert was some text you wanted to say, rather than another alert box?"
+         "second alert was some text you wanted to say, rather than another alert box?\n"
   end
 
   page "Adding Strings" do
     para "Now, if you want to put two bits of strings together, you can use the ",
-         code("+"), " character to do it. Try typing this:"
+         code("+"), " character to do it. Try typing this:\n"
     embed_code 'alert "Hello, " + "world!"'
     para "Same thing! The ", code("+"), " sticks the two strings together. This ",
-         "will end up being super useful later!"
+         "will end up being super useful later!\n"
   end
 
   lesson "Numbers and Math"
   page "Numbers" do
     para "You can just use numbers, and Ruby understands them:"
     embed_code "alert 2"
-    para "You can even use numbers that have a decimal point in them:"
+    para "You can even use numbers that have a decimal point in them:\n"
     embed_code "alert 1.5"
   end
 
   page "Basic Math" do
-    para "You can also do math with numbers, and it'll work out pretty well:"
+    para "You can also do math with numbers, and it'll work out pretty well:\n"
     embed_code "alert 1 + 2"
-    para ""
+    #para ""
     embed_code "alert 5 - 3"
-    para ""
+    #para ""
     embed_code "alert 2 * 3"
-    para ""
+    #para ""
     embed_code "alert 4 / 2"
-    para ""
+    #para ""
     para "But if you try this, nothing happens:"
     embed_code 'alert "hey" + 2'
     para "This is kind of fun and silly, though:"
@@ -149,7 +154,7 @@ lesson_set "Beginner Ruby" do
   page "Errors" do
     para "You know how nothing happened when you hit the Run button earlier? That ",
          "was because there was an error. You can see any errors that run by hitting ",
-         "either Alt-/ or Command-/, depending on what kind of computer you're using."
+         "either Alt-/ or Command-/, depending on what kind of computer you're using.\n\n\n"
     para "The error that results from ", code('alert "hey" + 2'), " is "
     embed_code "can't convert Fixnum into String"
     para "What is that?"
@@ -160,10 +165,10 @@ lesson_set "Beginner Ruby" do
     para "Each part of a Ruby program is an ", code("Object"), ". Right now, all you ",
          "need to know about ", code("Object"), "s is that it's sort of like saying ",
          '"a thing." Your program is made up of a bunch of ', code("Object"), "s ",
-         "working together."
+         "working together.\n\n"
     para "We'll learn more about ", code("Object"), "s in a future lesson, but there ",
          "is one thing I'll tell you: ", code("Object"), "s have a 'type.' This lets ",
-         "Ruby know what kind of ", code("Object"), " it is."
+         "Ruby know what kind of ", code("Object"), " it is.\n\n"
   end
 
   page "Adding numbers to words" do
@@ -171,9 +176,9 @@ lesson_set "Beginner Ruby" do
     embed_code 'alert "hey" + 2'
     para 'doesn\'t really work: "hey" is a ', code("String"), " object, and 2 is a ",
          code("Fixnum"), " object. And adding ", code("String"), "s and ",
-         code("Fixnum"), "s doesn't make any sense. We can make this code work, though!"
+         code("Fixnum"), "s doesn't make any sense. We can make this code work, though!\n\n"
     para "All we need to do is turn the ", code("Fixnum"), " into a ", code("String"),
-         ". We can do this by using the ", code("to_s"), " method."
+         ". We can do this by using the ", code("to_s"), " method.\n"
     embed_code 'alert "hey" + 2.to_s'
   end
 
@@ -183,14 +188,14 @@ lesson_set "Beginner Ruby" do
          code('"hey" + 2.to_s'), ". The ", code("2.to_s"), " turns a ",
          code("Fixnum"), " 2, which is like the mathematical idea of a 2, into the ",
          code("String"), " 2, which is like when you write a 2 down on a piece of ",
-         "paper."
+         "paper.\n\n"
   end
 
   lesson "Variables"
   page "They're like boxes" do
     para "What happens if we want to keep something around? Most programs are not ",
          "one line, I assure you. You can use a ", em("variable"), " to hold a ",
-         "value and use it later. It's like a box that you put things in."
+         "value and use it later. It's like a box that you put things in.\n\n"
     para "Let's try one out:"
     embed_code 'message = "Hello, world!"
 alert message'
@@ -198,8 +203,8 @@ alert message'
   end
   page "Assignment" do
     para "Cool stuff! We used an ", code("="), " to ", em("assign"), " the ", code("String"), '"Hello, world!" into the variable ', code("message"), ". We then passed that ",
-         code("message"), " to the ", code("alert"), " method."
-    para "As you can see, we can use variables in place of another value. Try this:"
+         code("message"), " to the ", code("alert"), " method.\n"
+    para "As you can see, we can use variables in place of another value. Try this:\n"
     embed_code 'number = 5
 number = number * 2
 number = number - 8
@@ -211,20 +216,20 @@ alert number'
   lesson "User Input"
   page "ask-ing for it." do
     para "We can ask the user of our program for some input, and then put their answer ",
-         "into a variable. It's easy! Check this program out:"
+         "into a variable. It's easy! Check this program out:\n"
     embed_code 'name = ask "What is your name?"
 alert "Hello, " + name'
     para "The ", code("ask"), " method brings up a box and lets our users type ",
          "something in. Fun! We put their answer into the ", code("name"), " variable ",
-         "and then showed it with ", code("alert"), ". Sweet!"
+         "and then showed it with ", code("alert"), ". Sweet!\n"
   end
 
   lesson "Basic flow control"
   page "if..." do
     para "Remember back to that Beginning Programming lesson... we talked about how ",
-         "programs are one big list, that the computer follows in order."
-    para "Well, guess what? We can actually change this order by using certain bits ",
-         "of code. Compare these two programs:"
+         "programs are one big list, that the computer follows in order. ", 
+         "Well, guess what? We can actually change this order by using certain bits ",
+         "of code. Compare these two. There are a few new things here.\n\n"
     embed_code 'number = 2
 if number == 2
   alert "Yes!"
@@ -237,7 +242,7 @@ if number == 2
 else
   alert "No!"
 end'
-    para "There are a few new things here."
+    #para "There are a few new things here."
   end
 
   page "==" do
@@ -252,7 +257,7 @@ end'
          code("Object"), " on its right against the ", code("Object"), " on its left. ",
          "If the two are equal, then the code after the ", code("if"), " will run. ",
          "If they're not equal, you get the code after the ", code("else"), ". The ",
-         code("end"), " lets us know we're done with our ", code("if"), "."
+         code("end"), " lets us know we're done with our ", code("if"), ".\n\n\n"
   end
 
   lesson "Example: a guessing game"
@@ -268,13 +273,13 @@ end'
     para "Can you guess what ", code("to_s"), " does, and why you need it? If you're ",
          "stumped, try asking ", link("on the Hackety Hack site", 
                                       :click => "http://hackety-hack.com/stream"), " ",
-         "and we'll give you a hand."
+         "and we'll give you a hand.\n\n"
   end
 
   lesson "Summary"
   page "Good job!" do
     para "Congrats! You've picked up all of the basics of Ruby. There's a lot more ",
-         "you still have to learn, though!"
+         "you still have to learn, though!\n"
     para "Here's what you've learned so far:"
     para "* ", code("alert"), " and ", code("ask")
     para "* ", code("="), ", variables, and ", code("==")
