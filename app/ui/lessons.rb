@@ -115,8 +115,8 @@ class HH::LessonContainer
   # part of the lesson DSL, executes the page block
   def set_content &blk
     delete_event_connections
-    @slot.clear{}
-    $ICONBUTTONS.clear
+    @slot.clear_all{}
+    $ICONBUTTONS.clear_all
     s = self
     @slot.append{s.instance_eval &blk; flush}
   end
@@ -319,7 +319,7 @@ class HH::LessonSet
 
   # calls finalization
   def close_lesson
-    $ICONBUTTONS.clear
+    $ICONBUTTONS.clear_all
     save_lesson
     @container.delete_event_connections
     @@open_lesson = nil
