@@ -3,7 +3,7 @@
 
 #require 'hpricot'
 
-module ::HH end
+#module ::HH end
 
 def HH.anonymous_binding
   bind = ::TOPLEVEL_BINDING
@@ -13,7 +13,7 @@ def HH.anonymous_binding
 end
 
 require 'lib/all'
-require 'app/syntax/markup'
+#equire 'app/syntax/markup'
 
 require 'app/db/sequel'
 
