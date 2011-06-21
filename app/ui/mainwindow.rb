@@ -61,8 +61,6 @@ Shoes.app :title => "Hackety Hack", :width => w, :height => h do
   style Shoes::Link, stroke: "#377", underline: false
   nostroke
 
-  alias :icon_button :iconbutton
-
   @main_content = flow do
     background "#e9efe0", height: h
     flow margin_top: h - 150 do

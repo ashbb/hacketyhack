@@ -114,6 +114,10 @@ class HH::SideTabs::Editor
     draw_content
   end
 
+  def on_click
+    reset
+  end
+
   def load script
     if not @save_button.hidden
       # current script is unsaved
@@ -147,72 +151,76 @@ class HH::SideTabs::Editor
     name = script[:name] || "A New Program"
     @script = script
 
-    reset_undo_redo
-    InsertionDeletionCommand.on_insert_text {|pos, str|  insert_text(pos, str)}
-    InsertionDeletionCommand.on_delete_text {|pos, len|  delete_text(pos, len)}
-    @editor = stack :margin_left => 10, :margin_top => 10, :width => 1.0, :height => 92 do
-      @sname = subtitle name, :font => "Lacuna Regular", :size => 22,
-        :margin => 0, :wrap => "trim"
-      @stale = para(script[:mtime] ? "Last saved #{script[:mtime].since} ago." :
-        "Not yet saved.", :margin => 0, :stroke => "#39C")
-      glossb "New Program", :top => 0, :right => 0, :width => 160 do
-        load({})
+    @slot.append do
+      reset_undo_redo
+      InsertionDeletionCommand.on_insert_text {|pos, str|  insert_text(pos, str)}
+      InsertionDeletionCommand.on_delete_text {|pos, len|  delete_text(pos, len)}
+      @editor = stack margin_left: 10, margin_top: 5, height: 92 do
+        @sname = subtitle name, font: "Lacuna Regular", size: 22
+        @stale = para(script[:mtime] ? "Last saved #{script[:mtime].since} ago." :
+          "Not yet saved.", stroke: "#39C")
+        glossb "New Program", left:615, top: 10, width:160, height: 25, margin: [25, 5] do
+          load({})
+        end
       end
-    end
-    stack :margin_left => 0, :width => 1.0, :height => -92 do
-      background white(0.4), :width => 38
-      @scroll =
-      flow :width => 1.0, :height => 1.0, :margin => 2, :scroll => true do
-        stack :width => 37, :margin_right => 6 do
-          @ln = para "1", :font => "Liberation Mono", :size => 10, :stroke => "#777", :align => "right"
-        end
-        stack :width => -37, :margin_left => 6, :margin_bottom => 60 do
-          @t = para "", :font => "Liberation Mono", :size => 10, :stroke => "#662",
-            :wrap => "trim", :margin_right => 28
-          @t.cursor = 0
-          def @t.hit_sloppy(x, y)
-            x -= 6
-            c = hit(x, y)
-            if c
-              c + 1
-            elsif x <= 48
-              hit(48, y)
-            end
+    
+      stack :margin_left => 0, :width => 1.0, :height => height-92 do
+        background white.push(0.4), :width => 38
+        @scroll =
+        flow :width => 1.0, :height => 1.0, :margin => 2, :scroll => true do
+          stack :width => 37, :margin_right => 6 do
+            @ln = para "1", :size => 10, :stroke => "#777", :align => "right"
           end
-        end
-        motion do |x, y|
-          c = @t.hit_sloppy(x, y)
-          if c
-            if self.cursor == :arrow
-              self.cursor = :text
-            end
-            if self.mouse[0] == 1 and @clicked
-              if @t.marker.nil?
-                @t.marker = c
-              else
-                @t.cursor = c
+          stack width: width-37, margin_left: 10 do
+            @t = para "", :size => 10, :stroke => "#662"
+            @t.cursor = 0
+            def @t.hit_sloppy(x, y)
+              x -= 6
+              c = hit(x, y)
+              if c
+                c + 1
+              elsif x <= 48
+                hit(48, y)
               end
             end
-          elsif self.cursor == :text
-            self.cursor = :arrow
           end
-        end
-        release do
-          @clicked = false
-        end
-        click do |_, x, y|
-          c = @t.hit_sloppy(x, y)
-          if c
-            @clicked = true
-            @t.marker = nil
-            @t.cursor = c
+
+          motion do |x, y|
+            c = @t.hit_sloppy(x, y)
+            if c
+              #if self.cursor == :arrow
+              #  self.cursor = :text
+              #end
+              if self.mouse[0] == 1 and @clicked
+                if @t.marker.nil?
+                  @t.marker = c
+                else
+                  @t.cursor = c
+                end
+              end
+            #elsif self.cursor == :text
+            #  self.cursor = :arrow
+            end
           end
-          update_text
+          release do
+            @clicked = false
+          end
+          click do |_, x, y|
+            c = @t.hit_sloppy(x, y)
+            if c
+              @clicked = true
+              @t.marker = nil
+              @t.cursor = c
+            end
+            update_text
+          end
+          leave { self.cursor = :arrow }
         end
-        leave { self.cursor = :arrow }
       end
+      flush
     end
 
+=begin
     stack :height => 40, :width => 182, :bottom => -3, :right => 0 do
       
       @copy_button = 
@@ -250,7 +258,7 @@ class HH::SideTabs::Editor
         @stale.text = "Last saved #{script[:mtime].since} ago."
       end
     end
-
+=end
     def onkey(k)
       case k when :shift_home, :shift_end, :shift_up, :shift_left, :shift_down, :shift_right
         @t.marker = @t.cursor unless @t.marker
@@ -352,13 +360,16 @@ class HH::SideTabs::Editor
     spaces = [?\t, ?\s, ?\n]
 
     keypress do |k|
+      k = k.downcase.to_sym if k.length > 1
       onkey(k)
+=begin
       if @t.cursor_top < @scroll.scroll_top
         @scroll.scroll_top = @t.cursor_top
       elsif @t.cursor_top + 92 > @scroll.scroll_top + @scroll.height
         @scroll.scroll_top = (@t.cursor_top + 92) - @scroll.height
       end
-
+=end
+      flush
     end
 
     # for samples do not allow to upload to cloud when just opened
@@ -389,16 +400,19 @@ class HH::SideTabs::Editor
   end
   
   def update_text
-    @t.replace *highlight(@str, @t.cursor)
+    #@t.replace *highlight(@str, @t.cursor)
+    @t.replace highlight(@str)
     @ln.replace [*1..(@str.count("\n")+1)].join("\n")
   end
 
   def text_changed
+=begin
     if @save_button.hidden
       @copy_button.hide
       @save_button.show
       @save_to_cloud_button.hide
     end
+=end
   end
 
   # find the indentation level at the current cursor or marker
@@ -421,7 +435,8 @@ class HH::SideTabs::Editor
 
   # called when the user wants to insert text
   def handle_text_insertion str
-      pos, len = @t.highlight;
+      #pos, len = @t.highlight;
+      pos, len = @t.text.length, 0
       handle_text_deletion(pos, len) if len > 0
 
       add_command InsertionCommand.new(pos, str)
@@ -439,14 +454,14 @@ class HH::SideTabs::Editor
   def insert_text pos, text
     @str.insert(pos, text)
     @t.cursor = pos + text.size
-    @t.cursor = :marker # XXX ???
+    #@t.cursor = :marker # XXX ???
     #update_text
   end
 
   def delete_text pos, len
     @str[pos, len] = "" # TODO use slice?
     @t.cursor = pos
-    @t.cursor = :marker
+    #@t.cursor = :marker
     #update_text
   end
 end
